@@ -1,12 +1,12 @@
-window.addEventListener('load', function () {
-  const canvas = document.getElementById('canvas1');
-  const ctx = canvas.getContext('2d');
+window.addEventListener("load", function () {
+  const canvas = document.getElementById("canvas1");
+  const ctx = canvas.getContext("2d");
   canvas.width = 1280;
   canvas.height = 720;
 
-  ctx.fillStyle = 'white';
+  ctx.fillStyle = "white";
   ctx.lineWidth = 3;
-  ctx.strokeStyle = 'white';
+  ctx.strokeStyle = "white";
 
   class Player {
     constructor(game) {
@@ -62,12 +62,41 @@ window.addEventListener('load', function () {
     }
   }
 
+  class Obstacle {
+    constructor(game) {
+      this.game = game;
+      this.collisionX = Math.random() * this.game.width;
+      this.collisionY = Math.random() * this.game.height;
+      this.collisionRadius = 60;
+    }
+
+    draw(context) {
+      context.beginPath();
+      context.arc(
+        this.collisionX,
+        this.collisionY,
+        this.collisionRadius,
+        0,
+        Math.PI * 2
+      );
+
+      context.save();
+      context.globalAlpha = 0.5;
+      context.fill();
+
+      context.restore();
+      context.stroke();
+    }
+  }
+
   class Game {
     constructor(canvas) {
       this.canvas = canvas;
       this.width = this.canvas.width;
       this.height = this.canvas.height;
       this.player = new Player(this);
+      this.numberOfObstacles = 5;
+      this.obstacles = [];
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -75,19 +104,19 @@ window.addEventListener('load', function () {
       };
 
       // event listeners
-      canvas.addEventListener('mousedown', e => {
+      canvas.addEventListener("mousedown", (e) => {
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = true;
       });
 
-      canvas.addEventListener('mouseup', e => {
+      canvas.addEventListener("mouseup", (e) => {
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = false;
       });
 
-      canvas.addEventListener('mousemove', e => {
+      canvas.addEventListener("mousemove", (e) => {
         if (this.mouse.pressed) {
           this.mouse.x = e.offsetX;
           this.mouse.y = e.offsetY;
@@ -98,10 +127,19 @@ window.addEventListener('load', function () {
     render(context) {
       this.player.draw(context);
       this.player.update();
+      this.obstacles.forEach((obstacle) => obstacle.draw(context));
+    }
+
+    init() {
+      for (let i = 0; i < this.numberOfObstacles; i++) {
+        this.obstacles.push(new Obstacle(this));
+      }
     }
   }
 
   const game = new Game(canvas);
+  game.init();
+  console.log(game);
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
