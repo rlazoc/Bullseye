@@ -1,19 +1,19 @@
-window.addEventListener('load', function () {
-  const canvas = document.getElementById('canvas1');
-  const ctx = canvas.getContext('2d');
+window.addEventListener("load", function () {
+  const canvas = document.getElementById("canvas1");
+  const ctx = canvas.getContext("2d");
   canvas.width = 1280;
   canvas.height = 720;
 
-  ctx.fillStyle = 'white';
+  ctx.fillStyle = "white";
   ctx.lineWidth = 3;
-  ctx.strokeStyle = 'white';
+  ctx.strokeStyle = "white";
 
   class Player {
     constructor(game) {
       this.game = game;
       this.collisionX = this.game.width * 0.5;
       this.collisionY = this.game.height * 0.5;
-      this.collisionRadius = 50;
+      this.collisionRadius = 30;
       this.speedX = 0;
       this.speedY = 0;
       this.dx = 0;
@@ -27,7 +27,7 @@ window.addEventListener('load', function () {
       this.spriteY;
       this.frameX = 0;
       this.frameY = 0;
-      this.image = document.getElementById('bull');
+      this.image = document.getElementById("bull");
     }
 
     draw(context) {
@@ -92,9 +92,21 @@ window.addEventListener('load', function () {
 
       this.collisionX += this.speedX * this.speedModifier;
       this.collisionY += this.speedY * this.speedModifier;
-
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 100;
+
+      // horizontal boundaries
+      if (this.collisionX < this.collisionRadius) {
+        this.collisionX = this.collisionRadius;
+      } else if (this.collisionX > this.game.width - this.collisionRadius) {
+        this.collisionX = this.game.width - this.collisionRadius;
+      }
+      // vertical boundaries
+      if (this.collisionY < this.game.topMargin + this.collisionRadius) {
+        this.collisionY = this.game.topMargin + this.collisionRadius;
+      } else if (this.collisionY > this.game.height - this.collisionRadius) {
+        this.collisionY = this.game.height - this.collisionRadius;
+      }
 
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
@@ -119,7 +131,7 @@ window.addEventListener('load', function () {
       this.collisionX = Math.random() * this.game.width;
       this.collisionY = Math.random() * this.game.height;
       this.collisionRadius = 40;
-      this.image = document.getElementById('obstacles');
+      this.image = document.getElementById("obstacles");
       this.spriteWidth = 250;
       this.spriteHeight = 250;
       this.width = this.spriteWidth;
@@ -178,27 +190,27 @@ window.addEventListener('load', function () {
       };
 
       // event listeners
-      canvas.addEventListener('mousedown', (e) => {
+      canvas.addEventListener("mousedown", (e) => {
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = true;
       });
 
-      canvas.addEventListener('mouseup', (e) => {
+      canvas.addEventListener("mouseup", (e) => {
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = false;
       });
 
-      canvas.addEventListener('mousemove', (e) => {
+      canvas.addEventListener("mousemove", (e) => {
         if (this.mouse.pressed) {
           this.mouse.x = e.offsetX;
           this.mouse.y = e.offsetY;
         }
       });
 
-      window.addEventListener('keydown', (e) => {
-        if (e.key == 'd') this.debug = !this.debug;
+      window.addEventListener("keydown", (e) => {
+        if (e.key == "d") this.debug = !this.debug;
       });
     }
 
@@ -237,7 +249,7 @@ window.addEventListener('load', function () {
           }
         });
 
-        const margin = testObstacle.collisionRadius * 2;
+        const margin = testObstacle.collisionRadius * 3;
 
         if (
           !overlap &&
