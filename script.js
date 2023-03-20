@@ -119,11 +119,8 @@ window.addEventListener('load', function () {
 
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
-        // [(distance < sumOfRadii), distance, sumOfRadii, dx, dy]
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, obstacle);
-        //let collision = game.checkCollision(this, obstacle)[0];
-        //let distance = game.checkCollision(this, obstacle)[1];
         if (collision) {
           const unit_x = dx / distance;
           const unit_y = dy / distance;
@@ -180,7 +177,6 @@ window.addEventListener('load', function () {
         context.stroke();
       }
     }
-
     update() {}
   }
 
@@ -343,7 +339,6 @@ window.addEventListener('load', function () {
         ...this.game.obstacles,
         ...this.game.eggs,
       ];
-
       collisionObjects.forEach((object) => {
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, object);
@@ -595,8 +590,8 @@ window.addEventListener('load', function () {
 
         this.timer = 0;
       }
-
       this.timer += deltaTime;
+
       // add eggs periodically
       if (
         this.eggTimer > this.eggInterval &&
@@ -741,7 +736,6 @@ window.addEventListener('load', function () {
 
   const game = new Game(canvas);
   game.init();
-  console.log(game);
 
   let lastTime = 0;
 
