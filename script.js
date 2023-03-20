@@ -32,6 +32,13 @@ window.addEventListener("load", function () {
       this.image = document.getElementById("bull");
     }
 
+    restart() {
+      this.collisionX = this.game.width * 0.5;
+      this.collisionY = this.game.height * 0.5;
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 100;
+    }
+
     draw(context) {
       context.drawImage(
         this.image,
@@ -316,7 +323,7 @@ window.addEventListener("load", function () {
     update() {
       this.collisionY -= this.speedY;
       this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5 - 50;
+      this.spriteY = this.collisionY - this.height * 0.5 - 40;
 
       // move to safety
       if (this.collisionY < this.game.topMargin) {
@@ -331,7 +338,11 @@ window.addEventListener("load", function () {
       }
 
       // collision with objects
-      let collisionObjects = [this.game.player, ...this.game.obstacles];
+      let collisionObjects = [
+        this.game.player,
+        ...this.game.obstacles,
+        ...this.game.eggs,
+      ];
 
       collisionObjects.forEach((object) => {
         let [collision, distance, sumOfRadii, dx, dy] =
@@ -347,7 +358,7 @@ window.addEventListener("load", function () {
 
       // collision with enemies
       this.game.enemies.forEach((enemy) => {
-        if (this.game.checkCollision(this, enemy)[0]) {
+        if (this.game.checkCollision(this, enemy)[0] && !this.game.gameOver) {
           this.markedForDeletion = true;
           this.game.removeGameObjects();
           this.game.lostHatchlings++;
@@ -525,7 +536,7 @@ window.addEventListener("load", function () {
       this.particles = [];
       this.gameObjects = [];
       this.score = 0;
-      this.winningScore = 5;
+      this.winningScore = 30;
       this.lostHatchlings = 0;
       this.gameOver = false;
       this.mouse = {
@@ -556,6 +567,7 @@ window.addEventListener("load", function () {
 
       window.addEventListener("keydown", (e) => {
         if (e.key == "d") this.debug = !this.debug;
+        else if (e.key == "r") this.restart();
       });
     }
 
@@ -666,6 +678,24 @@ window.addEventListener("load", function () {
       this.particles = this.particles.filter(
         (object) => !object.markedForDeletion
       );
+    }
+
+    restart() {
+      this.player.restart();
+      this.obstacles = [];
+      this.eggs = [];
+      this.enemies = [];
+      this.hatchlings = [];
+      this.particles = [];
+      this.mouse = {
+        x: this.width * 0.5,
+        y: this.height * 0.5,
+        pressed: false,
+      };
+      this.score = 0;
+      this.lostHatchlings = 0;
+      this.gameOver = false;
+      this.init();
     }
 
     init() {
