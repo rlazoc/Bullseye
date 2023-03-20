@@ -1,14 +1,14 @@
-window.addEventListener("load", function () {
-  const canvas = document.getElementById("canvas1");
-  const ctx = canvas.getContext("2d");
+window.addEventListener('load', function () {
+  const canvas = document.getElementById('canvas1');
+  const ctx = canvas.getContext('2d');
   canvas.width = 1280;
   canvas.height = 720;
 
-  ctx.fillStyle = "white";
+  ctx.fillStyle = 'white';
   ctx.lineWidth = 3;
-  ctx.strokeStyle = "black";
-  ctx.font = "40px Bangers";
-  ctx.textAlign = "center";
+  ctx.strokeStyle = 'black';
+  ctx.font = '40px Bangers';
+  ctx.textAlign = 'center';
 
   class Player {
     constructor(game) {
@@ -29,7 +29,7 @@ window.addEventListener("load", function () {
       this.spriteY;
       this.frameX = 0;
       this.frameY = 0;
-      this.image = document.getElementById("bull");
+      this.image = document.getElementById('bull');
     }
 
     restart() {
@@ -140,7 +140,7 @@ window.addEventListener("load", function () {
       this.collisionX = Math.random() * this.game.width;
       this.collisionY = Math.random() * this.game.height;
       this.collisionRadius = 40;
-      this.image = document.getElementById("obstacles");
+      this.image = document.getElementById('obstacles');
       this.spriteWidth = 250;
       this.spriteHeight = 250;
       this.width = this.spriteWidth;
@@ -195,7 +195,7 @@ window.addEventListener("load", function () {
         this.game.topMargin +
         Math.random() * (this.game.height - this.game.topMargin - this.margin);
       this.collisionRadius = 40;
-      this.image = document.getElementById("egg");
+      this.image = document.getElementById('egg');
       this.spriteWidth = 110;
       this.spriteHeight = 135;
       this.width = this.spriteWidth;
@@ -278,7 +278,7 @@ window.addEventListener("load", function () {
       this.collisionX = x;
       this.collisionY = y;
       this.collisionRadius = 30;
-      this.image = document.getElementById("larva");
+      this.image = document.getElementById('larva');
       this.spriteWidth = 150;
       this.spriteHeight = 150;
       this.width = this.spriteWidth;
@@ -332,7 +332,7 @@ window.addEventListener("load", function () {
         if (!this.game.gameOver) this.game.score++;
         for (let i = 0; i < 3; i++) {
           this.game.particles.push(
-            new Firefly(this.game, this.collisionX, this.collisionY, "yellow")
+            new Firefly(this.game, this.collisionX, this.collisionY, 'yellow')
           );
         }
       }
@@ -364,7 +364,7 @@ window.addEventListener("load", function () {
           this.game.lostHatchlings++;
           for (let i = 0; i < 5; i++) {
             this.game.particles.push(
-              new Spark(this.game, this.collisionX, this.collisionY, "blue")
+              new Spark(this.game, this.collisionX, this.collisionY, 'blue')
             );
           }
         }
@@ -377,7 +377,7 @@ window.addEventListener("load", function () {
       this.game = game;
       this.collisionRadius = 30;
       this.speedX = Math.random() * 3 + 0.5;
-      this.image = document.getElementById("toads");
+      this.image = document.getElementById('toads');
       this.spriteWidth = 140;
       this.spriteHeight = 260;
       this.width = this.spriteWidth;
@@ -546,28 +546,28 @@ window.addEventListener("load", function () {
       };
 
       // event listeners
-      canvas.addEventListener("mousedown", (e) => {
+      canvas.addEventListener('mousedown', (e) => {
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = true;
       });
 
-      canvas.addEventListener("mouseup", (e) => {
+      canvas.addEventListener('mouseup', (e) => {
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = false;
       });
 
-      canvas.addEventListener("mousemove", (e) => {
+      canvas.addEventListener('mousemove', (e) => {
         if (this.mouse.pressed) {
           this.mouse.x = e.offsetX;
           this.mouse.y = e.offsetY;
         }
       });
 
-      window.addEventListener("keydown", (e) => {
-        if (e.key == "d") this.debug = !this.debug;
-        else if (e.key == "r") this.restart();
+      window.addEventListener('keydown', (e) => {
+        if (e.key == 'd') this.debug = !this.debug;
+        else if (e.key == 'r') this.restart();
       });
     }
 
@@ -611,10 +611,10 @@ window.addEventListener("load", function () {
 
       // draw status text
       context.save();
-      context.textAlign = "left";
-      context.fillText("Score: " + this.score, 25, 50);
+      context.textAlign = 'left';
+      context.fillText('Score: ' + this.score, 25, 50);
       if (this.debug) {
-        context.fillText("Lost: " + this.lostHatchlings, 25, 100);
+        context.fillText('Lost: ' + this.lostHatchlings, 25, 100);
       }
       context.restore();
 
@@ -622,31 +622,31 @@ window.addEventListener("load", function () {
       if (this.score >= this.winningScore) {
         this.gameOver = true;
         context.save();
-        context.fillStyle = "rgba(0, 0, 0, 0.5)";
+        context.fillStyle = 'rgba(0, 0, 0, 0.5)';
         context.fillRect(0, 0, this.width, this.height);
-        context.fillStyle = "white";
-        context.textAlign = "center";
+        context.fillStyle = 'white';
+        context.textAlign = 'center';
         context.shadowOffsetX = 4;
         context.shadowOffsetY = 4;
-        context.shadowColor = "black";
+        context.shadowColor = 'black';
         let message1;
         let message2;
         if (this.lostHatchlings <= 5) {
-          message1 = "Bullseye!!!";
-          message2 = "You bullied the bullies!";
+          message1 = 'Bullseye!!!';
+          message2 = 'You bullied the bullies!';
         } else {
-          message1 = "Bullocks!";
+          message1 = 'Bullocks!';
           message2 =
-            "You lost " +
+            'You lost ' +
             this.lostHatchlings +
             " hatchlings, don't be a pushover!";
         }
-        context.font = "130px Bangers";
+        context.font = '130px Bangers';
         context.fillText(message1, this.width * 0.5, this.height * 0.5 - 20);
-        context.font = "40px Bangers";
+        context.font = '40px Bangers';
         context.fillText(message2, this.width * 0.5, this.height * 0.5 + 30);
         context.fillText(
-          "Final score: " + this.score + " - Press 'R' to butt heads again!",
+          "Final score: ' + this.score + ' - Press 'R' to butt heads again!",
           this.width * 0.5,
           this.height * 0.5 + 80
         );
