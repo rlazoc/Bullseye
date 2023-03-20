@@ -345,7 +345,7 @@ window.addEventListener("load", function () {
       // collision with enemies
       this.game.enemies.forEach((enemy) => {
         if (this.game.checkCollision(this, enemy)[0]) {
-          this.markedForDeletion(true);
+          this.markedForDeletion = true;
           this.game.removeGameObjects();
           this.game.lostHatchlings++;
         }
@@ -436,7 +436,7 @@ window.addEventListener("load", function () {
       this.markedForDeletion = false;
     }
 
-    draw() {
+    draw(context) {
       context.save();
       context.fillStyle = this.color;
       context.beginPath();
@@ -456,7 +456,7 @@ window.addEventListener("load", function () {
   class Firefly extends Particle {
     update() {
       this.angle += this.va;
-      this.collisionX += this.speedX;
+      this.collisionX += Math.cos(this.angle) * this.speedX;
       this.collisionY -= this.speedY;
 
       if (this.collisionY < 0 - this.radius) {
@@ -466,7 +466,9 @@ window.addEventListener("load", function () {
     }
   }
 
-  class Spark extends Particle {}
+  class Spark extends Particle {
+    update() {}
+  }
 
   class Game {
     constructor(canvas) {
