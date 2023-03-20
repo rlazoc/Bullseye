@@ -366,7 +366,7 @@ window.addEventListener("load", function () {
       this.game = game;
       this.collisionRadius = 30;
       this.speedX = Math.random() * 3 + 0.5;
-      this.image = document.getElementById("toad");
+      this.image = document.getElementById("toads");
       this.spriteWidth = 140;
       this.spriteHeight = 260;
       this.width = this.spriteWidth;
@@ -378,10 +378,22 @@ window.addEventListener("load", function () {
         Math.random() * (this.game.height - this.game.topMargin);
       this.spriteX;
       this.spriteY;
+      this.frameX = 0;
+      this.frameY = Math.floor(Math.random() * 4);
     }
 
     draw(context) {
-      context.drawImage(this.image, this.spriteX, this.spriteY);
+      context.drawImage(
+        this.image,
+        this.frameX * this.spriteWidth,
+        this.frameY * this.spriteHeight,
+        this.spriteWidth,
+        this.spriteHeight,
+        this.spriteX,
+        this.spriteY,
+        this.width,
+        this.height
+      );
 
       if (this.game.debug) {
         context.beginPath();
@@ -408,9 +420,12 @@ window.addEventListener("load", function () {
       if (this.spriteX + this.width < 0) {
         this.collisionX =
           this.game.width + this.width + Math.random() * this.game.width * 0.5;
+
         this.collisionY =
           this.game.topMargin +
           Math.random() * (this.game.height - this.game.topMargin);
+
+        this.frameY = Math.floor(Math.random() * 4);
       }
 
       let collisionObjects = [this.game.player, ...this.game.obstacles];
@@ -502,7 +517,7 @@ window.addEventListener("load", function () {
       this.eggTimer = 0;
       this.eggInterval = 1000;
       this.numberOfObstacles = 10;
-      this.maxEggs = 10;
+      this.maxEggs = 5;
       this.obstacles = [];
       this.eggs = [];
       this.enemies = [];
@@ -613,7 +628,7 @@ window.addEventListener("load", function () {
     }
 
     init() {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 5; i++) {
         this.addEnemy();
       }
 
